@@ -50,3 +50,8 @@ CrossDomain-Energy-Forecasting/
 **Required Dependencies:**
 ```bash
 pip install pandas numpy xgboost scikit-learn matplotlib seaborn
+
+Acknowledgements
+Dataset provided by ASHRAE and hosted by Kaggle.
+
+Academic supervision provided by the School of Computing / Department of Data Science at [Your University Name].
