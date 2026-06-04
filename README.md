@@ -5,7 +5,7 @@
 [![XGBoost](https://img.shields.io/badge/XGBoost-1.7+-orange.svg)](https://xgboost.readthedocs.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-> **Official repository for the Master's dissertation:** *Cross-Domain Energy Forecasting*. 
+> **Official repository for *Cross-Domain Energy Forecasting*.:**
 > This project implements an XGBoost Transfer Learning pipeline to mitigate domain shift and data scarcity in building energy prediction.
 
 ---
@@ -18,7 +18,7 @@ This research investigates the application of **Transfer Learning (TL)** to miti
 ---
 
 ## 2. Dataset Access (ASHRAE Great Energy Predictor III)
-Due to GitHub's file size limitations, the ~2.6 GB raw dataset is **not** hosted in this repository. To reproduce this experiment, you must download the dataset directly from Kaggle.
+Due to GitHub's file size limitations, the ~2.6 GB raw dataset is not hosted in this repository. To reproduce this experiment, you must download the dataset directly from Kaggle.
 
 1. Navigate to the [ASHRAE - Great Energy Predictor III Kaggle Competition](https://www.kaggle.com/c/ashrae-energy-prediction/data).
 2. Download the following files:
