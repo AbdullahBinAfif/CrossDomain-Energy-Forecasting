@@ -30,10 +30,10 @@ Due to GitHub's file size limitations, the ~2.6 GB raw dataset is not hosted in 
 ---
 
 ## 3. Reproducibility Setup
-This experiment was engineered to run efficiently in **Google Colab** (utilizing a T4 GPU), but can be executed locally. 
+This experiment was engineered to run efficiently in **Google Colab Pro** (utilizing a A100 GPU), but can be executed locally. 
 
 
-Project Structure
+Project Structure : ( most file not uploaded yet, it will be updated soon ) 
 CrossDomain-Energy-Forecasting/
 │
 ├── ashrae_data/                  # (Locally hosted data directory)
