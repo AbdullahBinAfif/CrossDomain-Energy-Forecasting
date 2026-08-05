@@ -1,24 +1,44 @@
 # Cross-Domain Energy Forecasting
-**A Transfer Learning Approach for Data-Scarce Building Environments**
+**Domain Similarity Versus Data Volume in XGBoost Warm-Start Transfer Learning**
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![XGBoost](https://img.shields.io/badge/XGBoost-1.7+-orange.svg)](https://xgboost.readthedocs.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 > **Official repository for *Cross-Domain Energy Forecasting*.:**
-> This project implements an XGBoost Transfer Learning pipeline to mitigate domain shift and data scarcity in building energy prediction.
-
+> This project empirically tests whether an XGBoost warm-start transfer learning pipeline can address domain shift and data scarcity in building energy prediction — and investigates why it does not.
 ---
 
 ## 1. Project Abstract
-The building sector accounts for a substantial proportion of global energy consumption. Accurate, high-resolution forecasting is a foundational requirement for smart grid optimization. However, traditional predictive frameworks exhibit a pronounced vulnerability to **domain shift**; they require extensive historical datasets to maintain accuracy. When deployed in "data-scarce" environments (e.g., newly commissioned facilities or buildings transitioning to 24/7 continuous operation), these models frequently fail to generalize.
 
-This research investigates the application of **Transfer Learning (TL)** to mitigate these limitations. Utilizing an Extreme Gradient Boosting (XGBoost) architecture, this project empirically evaluates the transfer of foundational thermodynamic and temporal feature weights from a highly structured, data-abundant source domain (**Educational facilities**) to a complex, continuous-operation target domain (**Healthcare facilities**), successfully reducing predictive error using only a fractional subset of target data.
+The building sector accounts for a substantial proportion of global energy 
+consumption. Accurate, high-resolution forecasting is a foundational 
+requirement for smart grid optimisation. However, traditional predictive 
+frameworks exhibit a pronounced vulnerability to **domain shift**; they 
+require extensive historical datasets to maintain accuracy. When deployed 
+in "data-scarce" environments (e.g., newly commissioned facilities or 
+buildings with unusual operational schedules), these models frequently 
+fail to generalise.
 
+This research investigates whether **Transfer Learning (TL)** can mitigate 
+this limitation, using an XGBoost warm-start mechanism to adapt a model 
+trained on a data-rich source domain (**Education-sector buildings**) to 
+two data-scarce target domains: **Healthcare** (continuous 24/7 operation, 
+operationally dissimilar to the source) and **Office** (weekday-dominant, 
+operationally similar to the source).
+
+Contrary to the initial hypothesis, this project finds that warm-start 
+transfer consistently **underperformed** a model trained from scratch on 
+the same limited target data — a pattern of **negative transfer**. 
+Critically, the severity of this effect was not uniform: it scaled 
+directly with the operational dissimilarity between source and target, 
+confirmed through paired statistical testing. This suggests that source-
+target domain similarity, rather than target data volume, is the primary 
+factor governing transfer learning outcomes in this setting.
 ---
 
 ## 2. Dataset Access (ASHRAE Great Energy Predictor III)
-Due to GitHub's file size limitations, the ~2.6 GB raw dataset is not hosted in this repository. To reproduce this experiment, you must download the dataset directly from Kaggle.
+Due to GitHub's file size limitations, the ~3 GB raw dataset is not hosted in this repository. To reproduce this experiment, you must download the dataset directly from Kaggle.
 
 1. Navigate to the [ASHRAE - Great Energy Predictor III Kaggle Competition](https://www.kaggle.com/c/ashrae-energy-prediction/data).
 2. Download the following files:
@@ -32,21 +52,54 @@ Due to GitHub's file size limitations, the ~2.6 GB raw dataset is not hosted in 
 ## 3. Reproducibility Setup
 This experiment was engineered to run efficiently in **Google Colab Pro** (utilizing a A100 GPU), but can be executed locally. 
 
-
-Project Structure : ( most file not uploaded yet, it will be updated soon ) 
+```
 CrossDomain-Energy-Forecasting/
 │
-├── ashrae_data/                  # (Locally hosted data directory)
-├── models/                       # Exported .json model weights
-│   └── teacher_model_repro.json  # Pre-trained base model
-│
+├── ashrae_data/                       # (Locally hosted data directory — not
+│                                       #  included in repo; see Setup below)
 ├── notebooks/
-│   ├── 01_Data_Engineering.ipynb # Memory optimization, imputation, feature extraction
-│   ├── 02_Baseline_Model.ipynb   # Teacher model training on Source Domain
-│   └── 03_Transfer_Learning.ipynb# Target adaptation, sweeps (1%-20%), and final evaluation
+│   ├── 01_Data_Engineering.ipynb      # Memory optimisation, imputation, feature extraction
+│   ├── 02_Baseline_Model.ipynb        # Teacher model training on source domain
+│   └── 03_Transfer_Learning.ipynb     # Target adaptation, sweeps, and evaluation
 │
-├── visuals/                      # Output graphs and EDA charts
-└── README.md
+├── README.md
+│
+└── outputs/                           # Generated by running the notebooks
+    │                                  # (saved to Google Drive during execution —
+    │                                  #  see Setup below for the exact path)
+    ├── models/
+    │   ├── teacher_model.json         # Trained Base Model
+    │   └── hyperparameter_sensitivity.csv
+    │
+    ├── processed_data/                # Cleaned, feature-engineered dataframes
+    │   ├── electricity_df.parquet
+    │   ├── source_df.parquet
+    │   └── target_df.parquet
+    │
+    ├── visuals/                       # EDA charts and results plots
+    │   ├── eda_domain_imbalance.png
+    │   ├── eda_missing_data.png
+    │   ├── eda_distribution.png
+    │   ├── eda_domain_comparison.png
+    │   ├── eda_temperature_consumption.png
+    │   ├── feature_importance_comparison.png
+    │   ├── prediction_vs_actual.png
+    │   ├── transfer_learning_curve_multiseed.png
+    │   ├── office_transfer_learning_curve.png
+    │   └── fixed_count_comparison.png
+    │
+    └── results/                       # Raw and aggregated experiment results
+        ├── fi_healthcare.csv
+        ├── fi_office.csv
+        ├── multiseed_raw_results.csv
+        ├── multiseed_aggregated_results.csv
+        ├── office_multiseed_raw_results.csv
+        ├── office_multiseed_aggregated_results.csv
+        ├── fixed_count_raw_results.csv
+        ├── fixed_count_aggregated_results.csv
+        └── healthcare_vs_office_significance.csv
+```
+
 **Required Dependencies:**
 ```bash
 pip install pandas numpy xgboost scikit-learn matplotlib seaborn
