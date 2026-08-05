@@ -50,8 +50,28 @@ Due to GitHub's file size limitations, the ~3 GB raw dataset is not hosted in th
 ---
 
 ## 3. Reproducibility Setup
-This experiment was engineered to run efficiently in **Google Colab Pro** (utilizing a A100 GPU), but can be executed locally. 
+This experiment was engineered to run in **Google Colab Pro**, using an
+L4 GPU, but can be adapted to run locally with a
+CUDA-compatible GPU.
 
+### Running the Pipeline
+
+1. Open `notebooks/01_Data_Engineering.ipynb` in Google Colab and run
+   all cells. This mounts Google Drive, processes the raw ASHRAE data,
+   and saves the cleaned dataframes to
+   `MyDrive/ashrae_outputs/processed_data/`.
+2. Open `notebooks/02_Baseline_Model.ipynb` and run all cells. This
+   loads the processed data, trains the Base Model, and saves it to
+   `MyDrive/ashrae_outputs/models/teacher_model.json`.
+3. Open `notebooks/03_Transfer_Learning.ipynb` and run all cells. This
+   loads the processed data and trained model, then runs the full
+   Healthcare and Office transfer learning experiments.
+
+Each notebook mounts Google Drive independently at the start and
+expects the previous notebook's outputs to already be saved there —
+they are designed to be run in separate Colab sessions, in order.
+
+### Folder Structure
 ```
 CrossDomain-Energy-Forecasting/
 │
@@ -102,9 +122,9 @@ CrossDomain-Energy-Forecasting/
 
 **Required Dependencies:**
 ```bash
-pip install pandas numpy xgboost scikit-learn matplotlib seaborn
-
+pip install pandas numpy xgboost scikit-learn matplotlib seaborn scipy pyarrow
+```
 Acknowledgements
 Dataset provided by ASHRAE and hosted by Kaggle.
 
-Academic supervision provided by the School of Computing / Department of Data Science at Newcastle University.
+Academic supervision provided by the School of Computing, Newcastle University.
