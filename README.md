@@ -124,7 +124,7 @@ CrossDomain-Energy-Forecasting/
 ```bash
 pip install pandas numpy xgboost scikit-learn matplotlib seaborn scipy pyarrow
 ```
-Acknowledgements
+## Acknowledgements
 Dataset provided by ASHRAE and hosted by Kaggle.
 
 Academic supervision provided by the School of Computing, Newcastle University.
